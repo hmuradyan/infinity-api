@@ -25,4 +25,6 @@ li + li {
 .taskTitle{ margin:  20px 0;}
 .lable{width: 30%; float: left;}
 .timerCont{ width: 70%; text-align: left; float: right;}
+.menual{background-color:#95be22; height: 20px; padding: 5px; color:#FFF; cursor: pointer; margin: 10px 0; border-radius: 3px;}
+.menual:hover{background-color: #78a300;}
 select.start,select.end { border: 1px solid #CCC !important; width: 100px; margin: 5px;}

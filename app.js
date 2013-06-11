@@ -1,7 +1,8 @@
 (function() {
 var customFields = [];
 var assigneeUserId =null;
-
+var workData = {};
+var totalHours = 0;
   return {
 
     defaultState: 'loading',
@@ -24,13 +25,14 @@ var assigneeUserId =null;
          
         };
       },
-
-      target: function(){
+      target: function(data){
         var customFieldsValue = '';
         for(var i=0; i < customFields.length; i++){
           customFieldsValue += ' '+customFields[i].key+' '+ customFields[i].value ;
         }
-        var tiketData = 'id='+this.ticket().id() +'&userEmail=' + this.currentUser().email() +'&assignee_id=' + assigneeUserId +'&custom_fields=' + customFieldsValue +'&subject=' + this.ticket().subject() +'&description=' + this.ticket().description();
+        var tiketData = 'id='+this.ticket().id() +'&userEmail=' + this.currentUser().email() +'&assignee_id=' + assigneeUserId +'&custom_fields=' + customFieldsValue +'&subject=' + this.ticket().subject() +'&description=' + this.ticket().description() + '&workDescription='+workData.workDescription + '&startTime='+workData.startTime+'&endTime=' + workData.endTime+'&workHours='+workData.workHours;
+       console.log('test');
+       console.log(tiketData);
          return {
           contentType: 'application/json',
           url: 'http://195.250.88.93:8081/ticketchanged?'+tiketData,
@@ -100,16 +102,18 @@ var assigneeUserId =null;
 
     appTarget:function(data){
 
-        var desk = this.$('.menualTimer textarea').val();
+        var desc = this.$('.menualTimer textarea').val();
         var start = this.$('.menualstart').val();
         var end = this.$('.menualend').val();
-
-      //  alert(desk);
-       // alert(start);
-       // alert(end);
         var workHour =  this._workHours(start,end);
-        alert(workHour);
-       // this.ajax('target');
+        workData = {
+          workHours: workHour,
+          workDescription :desc,
+          startTime: start,
+          endTime: end
+        };
+  
+        this.ajax('target');
     },
 
     handleFail: function (data) {
@@ -140,45 +144,32 @@ var assigneeUserId =null;
         var startLock = start.substr(start.length-2);
         var endLock = end.substr(end.length-2);
 
-        var startH = start;
-        alert(startH + 'aaaaaaaaaa');
-        if(startH.substring(0,1) === '0'){
-            startH = start.substring(1,1);
-            alert(startH + 'test');
-
-        }
-        else startH= start.substring(0,2);
-        alert(start +'start');
-   // alert(startH + 'ssada');
-      /*  var startH = (start.substring(0,1) === 0)? start.substring(1,1):start.substring(0,2);
-        var endH = (end.substring(0,1) === 0)? end.substring(1,1): end.substring(0,2);
+        var startH = (start.substring(0,1) > 0)? start.substring(0,2): start.substring(1,2);
+        var endH = (end.substring(0,1) >0)? end.substring(0,2): end.substring(1,2);
+       
         start = start.substring(3);
         end = end.substring(3);
-        var startM = (start.substring(0,1) === 0)? start.substring(1,1):start.substring(0,2);
-        var endM =  (end.substring(0,1) === 0)? end.substring(1,1): end.substring(0,2);
-        var workH=0;
-        var workM=0;
-        var em = 0;
-        var sm = 0;
-        console.log(startLock + '' + endLock);
-        console.log(startH);
-        console.log(startM);
-        console.log(endH);
-        console.log(endM);
+        var startM = (start.substring(0,1) > 0)? start.substring(0,2): start.substring(1,2);
+        var endM =  (end.substring(0,1) > 0)? end.substring(0,2) : end.substring(1,2);
+        var workH=0, workM=0 ,em = 0, sm = 0;
+        
        if(startLock === endLock && startH <= endH){
-            sm= (startH === '12')? startM: startH*60 + startM;
-            em= (endH === '12')? endM: endH*60 + endM;
+            sm= (startH === '12')? startM : startH*60 + startM*1;
+            em= (endH === '12')? endM: endH*60 + endM *1;
+            console.log(sm);
+            console.log(em);
+
             workH = (em - sm)/60;
         }
         else if(startLock === 'am' && endLock === 'pm'){
-             sm= (startH === 12)? startM: startH*60 + startM;
-             em= (endH === 12)? (12-startH)*60 +endM: (12-startH)*60+ endH*60 + endM;
+             sm= (startH === 12)? startM: startH*60 + startM*1;
+             em= (endH === 12)? (12-startH)*60 +endM: (12-startH)*60+ endH*60 + endM*1;
             workH = (em - sm)/60;
         }
 
-*/
 
-        return 0;
+
+        return workH;
     }
    
   };
