@@ -168,7 +168,6 @@ var totalHours = 0;
         }
 
 
-
         return workH;
     }
    
