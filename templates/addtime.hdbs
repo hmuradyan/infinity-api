@@ -1,0 +1,6 @@
+<div class='menual'>
+   <div><p>Menual Time </p></div>
+</div>
+<input type ='hidden' class='menualstart' />
+<input type ='hidden' class='menualend' />
+<div class='menualTimer'></div>

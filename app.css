@@ -1,0 +1,28 @@
+h3 {
+  line-height: 30px;
+}
+
+.logo {
+  background-image: app-asset-url("logo-small.png");
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 25px 25px;
+  float: right;
+  height: 25px;
+  width: 25px;
+}
+
+li + li {
+  margin-top: 0.4em;
+}
+.inlineBlock{
+	display: inline-block;
+}
+.clear{clear: both;}
+.result { margin-top: 20px;}
+.droIcon{background-image: app-asset-url("icon_dropdown.png"); width: 17px; height: 17px;}
+.menualTimer{display: none;}
+.taskTitle{ margin:  20px 0;}
+.lable{width: 30%; float: left;}
+.timerCont{ width: 70%; text-align: left; float: right;}
+select.start,select.end { border: 1px solid #CCC !important; width: 100px; margin: 5px;}

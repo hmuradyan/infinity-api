@@ -1,0 +1,28 @@
+<div class ='lable'><p>Data Selector</p></div>
+<div class ='timerCont'>
+	<select class= 'start' id='menualstart'><option>Start Time </option> </select><br/>
+	<select class= 'end' id='menualend'><option>End Time </option> </select>
+</div>
+<div class='clear'></div>
+
+<div> <p> Descripton</p></div>
+<textarea rows="4" cols="50"></textarea>
+<div class='clear'></div>
+
+<script type="text/javascript">
+	$(function(){
+		$('.menual').click(function(){
+			if($('.menualTimer').is(':hidden')){
+				$('.menualTimer').slideDown("slow");
+			}else{
+				$('.menualTimer').hide();
+			}
+		})
+     $('#menualstart').change(function(){
+        $('.menualstart').val($(this).val());
+      });
+      $('#menualend').change(function(){
+          $('.menualend').val($(this).val());
+        });
+	})
+</script>
