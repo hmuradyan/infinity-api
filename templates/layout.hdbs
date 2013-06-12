@@ -2,6 +2,8 @@
   <span class="logo"/>
   <h3>Freshbook</h3>
 </header>
+<div class = 'timeEntry'/>
+
 <section data-main />
 
 

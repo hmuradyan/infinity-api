@@ -1,0 +1,12 @@
+{{#if entryData.length}}
+{{#each entryData}}
+<div class='timeentryCont'>
+	<div class ='desc'><p>{{this.notes}}</p></div>
+	<div class ='hourcont'>
+		<div class='hour'>{{this.hour}}</div>
+	</div>
+	<div class='clear'/>
+</div>
+ {{/each}}
+ {{/if}}
+<div class='clear'/>

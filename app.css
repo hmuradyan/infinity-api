@@ -24,7 +24,11 @@ li + li {
 .menualTimer{display: none;}
 .taskTitle{ margin:  20px 0;}
 .lable{width: 30%; float: left;}
-.timerCont{ width: 70%; text-align: left; float: right;}
-.menual{background-color:#95be22; height: 20px; padding: 5px; color:#FFF; cursor: pointer; margin: 10px 0; border-radius: 3px;}
+.timerCont{ width: 70%; text-align: left; float: right; }
+.menual{background-color:#95be22; height: 20px; padding: 5px; color:#FFF; cursor: pointer; margin: 10px 0; border-radius: 5px;}
 .menual:hover{background-color: #78a300;}
 select.start,select.end { border: 1px solid #CCC !important; width: 100px; margin: 5px;}
+.hour{background-color:#F4F4F4;  border-radius: 15px;  width: 50px; float: right;;text-align: center;padding: 5px; border: 1px solid #C7C7C7;}
+.timeentryCont{margin: 10px 0;}
+.timeentryCont .desc{ display: inline-block; float: left;}
+.timeentryCont .hourcont{ float: right; display: inline-block;}

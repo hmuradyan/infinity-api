@@ -2,7 +2,6 @@
 var customFields = [];
 var assigneeUserId =null;
 var workData = {};
-var totalHours = 0;
   return {
 
     defaultState: 'loading',
@@ -31,12 +30,22 @@ var totalHours = 0;
           customFieldsValue += ' '+customFields[i].key+' '+ customFields[i].value ;
         }
         var tiketData = 'id='+this.ticket().id() +'&userEmail=' + this.currentUser().email() +'&assignee_id=' + assigneeUserId +'&custom_fields=' + customFieldsValue +'&subject=' + this.ticket().subject() +'&description=' + this.ticket().description() + '&workDescription='+workData.workDescription + '&startTime='+workData.startTime+'&endTime=' + workData.endTime+'&workHours='+workData.workHours;
-       console.log('test');
-       console.log(tiketData);
+    
          return {
           contentType: 'application/json',
           url: 'http://195.250.88.93:8081/ticketchanged?'+tiketData,
           type: 'GET'
+        };
+      },
+
+      showTimeEntry:function(){
+        var data = 'unserName='+this.currentUser().email()+'&task_id=' + this.ticket().id();
+         return {
+          contentType: 'application/json',
+          url: 'http://195.250.88.93:8081/timeEntry?'+data,
+          type: 'GET',
+          dataType: "json"
+         
         };
       }
 
@@ -47,13 +56,10 @@ var totalHours = 0;
 
       // The app is active, so call requestBookmarks (L#65)
       'app.activated': 'appActivated',
-     /* 'click .search-btn': 'doTheSearch',
-      'searchZendesk.done': 'handleResults',
-      'searchZendesk.fail': 'handleFail',*/
-
+      'showTimeEntry.done':'handleTimeEntry',
       'click .target': 'appTarget',
-     
-     
+      'target.fail': 'handleTargetFail',
+      
 
       '*.changed': function(data) {
          var propertyName = data.propertyName;
@@ -78,6 +84,7 @@ var totalHours = 0;
 
     },
     init: function(data) {
+      this.ajax('showTimeEntry');
       this.switchTo('addtime');
       var menualTemplate = this.renderTemplate('menual',{});
       this.$('.menualTimer').append(menualTemplate);
@@ -91,8 +98,8 @@ var totalHours = 0;
         this.renderTarget(data);
         this.init();
     },
-    saveUserSettings : function(){
 
+    saveUserSettings : function(){
        this.ajax('sendUsersData');
     },
 
@@ -112,8 +119,21 @@ var totalHours = 0;
           startTime: start,
           endTime: end
         };
-  
-        this.ajax('target');
+
+       var timeEntryTemplate = this.renderTemplate('timeentry',{entryData:[{notes:desc, hour:workHour}]});
+         this.$('.timeEntry').prepend(timeEntryTemplate);
+         this.ajax('target');
+    },
+
+    handleTimeEntry:function(data){
+     console.log('dsffsfsdfdsfsd');
+     console.log(data);
+      var timeEntryTemplate = this.renderTemplate('timeentry',{entryData:data});
+         this.$('.timeEntry').append(timeEntryTemplate);
+    },
+
+    handleTargetFail :function(data){
+      alert('fail');
     },
 
     handleFail: function (data) {
@@ -153,18 +173,31 @@ var totalHours = 0;
         var endM =  (end.substring(0,1) > 0)? end.substring(0,2) : end.substring(1,2);
         var workH=0, workM=0 ,em = 0, sm = 0;
         
-       if(startLock === endLock && startH <= endH){
-            sm= (startH === '12')? startM : startH*60 + startM*1;
-            em= (endH === '12')? endM: endH*60 + endM *1;
-            console.log(sm);
-            console.log(em);
+       if(startLock === endLock ){
+            startH = (startH === '12')? 0: startH*1;
+            endH = (endH === '12')? 0: endH*1;
 
-            workH = (em - sm)/60;
+            if(startH > endH){
+               workH = (24*60-((startH*60+startM*1) - (endH*60+endM*1)))/60;
+            }
+
+            if(startH<endH)
+            {
+              workH = ((endH*60 +endM*1) - (startH*60 + startM*1))/60;
+            }
+            else {
+                if(startM < endM)
+                  workH =  (endM - startM)/60;
+                else  
+                  workH = (24*60-((startH*60+startM*1) - (endH*60+endM*1)))/60;
+            }
+
         }
-        else if(startLock === 'am' && endLock === 'pm'){
-             sm= (startH === 12)? startM: startH*60 + startM*1;
-             em= (endH === 12)? (12-startH)*60 +endM: (12-startH)*60+ endH*60 + endM*1;
-            workH = (em - sm)/60;
+        else {
+             sm= (startH === '12')? 12*60 + startM*1 : (12-startH)*60 + startM*1;
+             em= (endH === '12')? endM: endH*60 + endM*1;
+
+              workH = (em*1 + sm*1)/60;
         }
 
 
