@@ -5,6 +5,10 @@
 	<div class ='hourcont'>
 		<div class='hour'>{{this.hour}}</div>
 	</div>
+	<div class='icones'>
+		<span class='edit'>&nbsp;</span>
+		<span class='remove'>&nbsp;</span>
+	</div>
 	<div class='clear'/>
 </div>
  {{/each}}

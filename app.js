@@ -123,6 +123,10 @@ var workData = {};
        var timeEntryTemplate = this.renderTemplate('timeentry',{entryData:[{notes:desc, hour:workHour}]});
          this.$('.timeEntry').prepend(timeEntryTemplate);
          this.ajax('target');
+         this.$('.menualTimer textarea').val('');
+         this.$('#menualstart').val('start');
+         this.$('#menualend').val('end');
+
     },
 
     handleTimeEntry:function(data){
@@ -158,8 +162,9 @@ var workData = {};
         }
       }
       this.$('.start').html('<option>Start Time </option>'+str);
-      this.$('.end').html('<option>End Time </option>'+str);
+      this.$('.end').html('<option value="end">End Time </option>'+str);
     },
+
     _workHours: function(start, end){
         var startLock = start.substr(start.length-2);
         var endLock = end.substr(end.length-2);
@@ -199,7 +204,6 @@ var workData = {};
 
               workH = (em*1 + sm*1)/60;
         }
-
 
         return workH;
     }
